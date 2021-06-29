@@ -11,7 +11,6 @@ def create(request):
         try:
             full_url = json.loads(request.body)['url']
             shortener = Shortener.objects.create(full_url=full_url)
-        #except Exception as e:
         except ValidationError as e:
             return HttpResponse('Error creating shortener - {0}'.format(e), status=400)
         except KeyError as e:
@@ -33,7 +32,6 @@ def redirect_to_full_url(request, short_url):
             shortener.counter += 1
             shortener.save()
             return HttpResponseRedirect(shortener.full_url)
-        #except Exception as e:
         except Shortener.DoesNotExist as e:
             return HttpResponse('Not found - {0}'.format(e), status=404)
         except Exception:
